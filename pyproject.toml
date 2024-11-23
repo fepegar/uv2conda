@@ -1,0 +1,35 @@
+[project]
+name = "uv2conda"
+version = "0.1.0"
+description = "Create conda environment files from lists of dependencies"
+readme = "README.md"
+authors = [
+    { name = "Fernando Pérez-García", email = "fepegar@gmail.com" }
+]
+requires-python = ">=3.9"
+dependencies = [
+    "packaging",
+    "pyyaml",
+    "typer",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff.lint.isort]
+force-single-line = true
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.29.5",
+    "pre-commit-uv>=4.1.4",
+    "pyright>=1.1.389",
+    "pytest>=8.3.3",
+    "pytest-sugar>=1.0.0",
+    "ruff>=0.8.0",
+    "tox-uv>=1.16.0",
+]
+
+[project.scripts]
+uv2conda = "uv2conda.main:app"
