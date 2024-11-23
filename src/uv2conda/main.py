@@ -15,6 +15,8 @@ def uv2conda(
         "-i",
         file_okay=False,
         dir_okay=True,
+        exists=True,
+        readable=True,
         help="Path to the project directory",
     ),
     name: str = typer.Option(
@@ -35,6 +37,7 @@ def uv2conda(
         "-o",
         file_okay=True,
         dir_okay=False,
+        writable=True,
         help="Path to the output conda environment file",
     ),
 ):
