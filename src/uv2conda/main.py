@@ -7,7 +7,7 @@ from .conda import make_conda_env_from_uv_project
 app = typer.Typer()
 
 
-@app.command()
+@app.command(no_args_is_help=True)
 def uv2conda(
     input_project_dir: Path = typer.Option(
         ...,
