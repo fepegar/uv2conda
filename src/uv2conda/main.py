@@ -2,12 +2,18 @@ from pathlib import Path
 
 import typer
 
-from .conda import make_conda_env_from_uv_project
+from .conda import make_conda_env_from_project_dir
 
 app = typer.Typer()
 
 
-@app.command(no_args_is_help=True)
+@app.command(
+    no_args_is_help=True,
+    context_settings={
+        "allow_extra_args": True,
+        "ignore_unknown_options": True,
+    },
+)
 def uv2conda(
     input_project_dir: Path = typer.Option(
         ...,
@@ -40,10 +46,12 @@ def uv2conda(
         writable=True,
         help="Path to the output conda environment file",
     ),
+    context: typer.Context = typer.Option(None),
 ):
-    make_conda_env_from_uv_project(
+    make_conda_env_from_project_dir(
         input_project_dir,
         name=name,
         python_version=python_version,
         out_path=out_conda_path,
+        uv_args=context.args,
     )
