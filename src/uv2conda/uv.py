@@ -14,20 +14,26 @@ def write_requirements_file_from_project_dir(
     command = [
         "uv",
         "export",
-        "--project", str(project_dir),
+        "--project", project_dir,
         "--no-emit-project",
         "--no-dev",
         "--no-hashes",
         "--quiet",
-        "--output-file", str(out_path),
+        "--output-file", out_path,
     ]
     if extra_args is not None:
         command.extend(extra_args)
-    try:
-        subprocess.run(command, check=True)
-    except subprocess.CalledProcessError as e:
-        msg = f"Failed to write requirements file from uv project: {e}"
-        raise RuntimeError(msg) from e
+    command = [str(arg) for arg in command]
+
+    result = subprocess.run(command, capture_output=True, text=True)
+    if result.returncode != 0:
+        command_str = " ".join(command)
+        msg = (
+            "Error creating requirements file from uv project."
+            f"\nCommand: {command_str}"
+            f"\nOutput: {result.stderr}"
+        )
+        raise RuntimeError(msg)
 
 
 def get_requirents_from_project_dir(
