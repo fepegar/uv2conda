@@ -16,45 +16,64 @@ logger.add(
     format="<level>{level}</level> | <cyan>{message}</cyan>",
 )
 
+
 @app.command()
 def uv2conda(
-    project_dir: Annotated[Path, typer.Option(
-        "--project-dir",
-        "-d",
-        file_okay=False,
-        dir_okay=True,
-        exists=True,
-        readable=True,
-        help="Path to the input project directory. Defaults to the current directory.",
-    )] = Path.cwd().resolve(),
-    name: Annotated[str, typer.Option(
-        "--name",
-        "-n",
-        help="Name of the conda environment. Defaults to the project directory name.",
-    )] = "",
-    python_version: Annotated[str, typer.Option(
-        "--python",
-        "-p",
-        help="Python version. Defaults to the pinned version in the project directory.",
-    )] = "",
-    conda_env_path: Annotated[Path, typer.Option(
-        "--conda-env-path",
-        "-c",
-        file_okay=True,
-        dir_okay=False,
-        writable=True,
-        help="Path to the output conda environment file.",
-    )] = Path("environment.yaml"),
-    show: Annotated[bool, typer.Option(
-        "--show",
-        "-s",
-        help="Print the contents of the generated conda environment file.",
-    )] = False,
-    uv_args: Annotated[list[str], typer.Option(
-        "--uv-args",
-        "-u",
-        help="Extra arguments to pass to uv export. May be used multiple times.",
-    )] = [],
+    project_dir: Annotated[
+        Path,
+        typer.Option(
+            "--project-dir",
+            "-d",
+            file_okay=False,
+            dir_okay=True,
+            exists=True,
+            readable=True,
+            help="Path to the input project directory. Defaults to the current directory.",
+        ),
+    ] = Path.cwd().resolve(),
+    name: Annotated[
+        str,
+        typer.Option(
+            "--name",
+            "-n",
+            help="Name of the conda environment. Defaults to the project directory name.",
+        ),
+    ] = "",
+    python_version: Annotated[
+        str,
+        typer.Option(
+            "--python",
+            "-p",
+            help="Python version. Defaults to the pinned version in the project directory.",
+        ),
+    ] = "",
+    conda_env_path: Annotated[
+        Path,
+        typer.Option(
+            "--conda-env-path",
+            "-c",
+            file_okay=True,
+            dir_okay=False,
+            writable=True,
+            help="Path to the output conda environment file.",
+        ),
+    ] = Path("environment.yaml"),
+    show: Annotated[
+        bool,
+        typer.Option(
+            "--show",
+            "-s",
+            help="Print the contents of the generated conda environment file.",
+        ),
+    ] = False,
+    uv_args: Annotated[
+        list[str],
+        typer.Option(
+            "--uv-args",
+            "-u",
+            help="Extra arguments to pass to uv export. May be used multiple times.",
+        ),
+    ] = [],
 ):
     if not name:
         name = project_dir.name

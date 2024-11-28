@@ -1,6 +1,6 @@
 # uv2conda
 
-Tiny package to create a conda environment file from a Python project.
+Tiny Python package to create a [`conda`](https://docs.anaconda.com/miniconda/) environment file from a Python project using [`uv`](https://docs.astral.sh/uv/).
 
 ```shell
 pip install uv2conda
@@ -12,7 +12,7 @@ uv2conda \
     --uv-args "--prerelease=allow"
 ```
 
-From Python:
+Or, in Python:
 
 ```python
 import uv2conda
