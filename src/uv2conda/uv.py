@@ -14,12 +14,14 @@ def write_requirements_file_from_project_dir(
     command = [
         "uv",
         "export",
-        "--project", project_dir,
+        "--project",
+        project_dir,
         "--no-emit-project",
         "--no-dev",
         "--no-hashes",
         "--quiet",
-        "--output-file", out_path,
+        "--output-file",
+        out_path,
     ]
     if extra_args is not None:
         command.extend(extra_args)

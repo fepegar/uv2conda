@@ -11,5 +11,5 @@ __all__ = [
     "make_conda_env_from_requirements_file",
     "read_requirements_file",
     "get_requirents_from_project_dir",
-    "write_requirements_file_from_project_dir"
+    "write_requirements_file_from_project_dir",
 ]
