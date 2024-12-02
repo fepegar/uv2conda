@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## Unreleased
+
+<small>[Compare with latest](https://github.com/fepegar/uv2conda/compare/v0.1.2...HEAD)</small>
+
+### Added
+
+- Add changelog ([ae06e14](https://github.com/fepegar/uv2conda/commit/ae06e14a55adc8308dc1bedca7a11c0555a2c25a) by Fernando Pérez-García).
+- Add justfile ([959ab43](https://github.com/fepegar/uv2conda/commit/959ab439251c653805d0a0ac8b4a94dc668ee592) by Fernando Pérez-García).
+
+<!-- insertion marker -->
 ## [v0.1.2](https://github.com/fepegar/uv2conda/releases/tag/v0.1.2) - 2024-12-02
 
 <small>[Compare with v0.1.1](https://github.com/fepegar/uv2conda/compare/v0.1.1...v0.1.2)</small>
