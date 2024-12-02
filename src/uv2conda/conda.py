@@ -22,6 +22,7 @@ def make_conda_env_from_dependencies(
     pip_dependencies: Optional[list[str]] = None,
     out_path: Optional[TypePath] = None,
     return_yaml: bool = False,
+    yaml_width: int = 1000,
 ) -> TypeCondaEnv | str:
     if not is_valid_python_version(python_version):
         raise ValueError(f'Invalid Python version: "{python_version}"')
@@ -41,7 +42,7 @@ def make_conda_env_from_dependencies(
             env["dependencies"].append({"pip": pip_dependencies})
 
     if return_yaml or out_path is not None:
-        yaml_string = yaml.dump(env, sort_keys=False)
+        yaml_string = yaml.dump(env, sort_keys=False, width=yaml_width)
         if out_path is not None:
             with open(out_path, "w") as f:
                 f.write(yaml_string)
