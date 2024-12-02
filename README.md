@@ -1,5 +1,7 @@
 # uv2conda
 
+![PyPI](https://img.shields.io/pypi/v/uv2conda)
+
 Tiny Python package to create a [`conda`](https://docs.anaconda.com/miniconda/) environment file from a Python project using [`uv`](https://docs.astral.sh/uv/).
 
 ```shell
@@ -28,11 +30,13 @@ uv2conda.make_conda_env_from_project_dir(
 
 Example for this library:
 
-```console
-$ uv2conda --python 3.12.7 --show
-INFO | Environment name not provided. Using project directory name ("uv2conda")
-SUCCESS | Conda environment file created at "environment.yaml"
-INFO | Printing contents of the generated conda environment file
+```shell
+uv2conda --python 3.12.7 --show
+```
+
+Output (printed on screen as we used `--show`):
+
+```yaml
 name: uv2conda
 dependencies:
 - python=3.12.7
