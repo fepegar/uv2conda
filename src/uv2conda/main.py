@@ -71,14 +71,14 @@ def uv2conda(
         typer.Option(
             "--uv-args",
             "-u",
-            help="Extra arguments to pass to uv export. May be used multiple times.",
+            help="Extra arguments to pass to `uv export`. May be used multiple times.",
         ),
     ] = [],
 ):
     if not name:
         name = project_dir.name
         msg = f'Environment name not provided. Using project directory name ("{name}")'
-        logger.warning(msg)
+        logger.info(msg)
 
     if not python_version:
         pinned_python_version_filepath = project_dir / ".python-version"
@@ -88,7 +88,7 @@ def uv2conda(
                 "Python version not provided. Using pinned version"
                 f' found in "{pinned_python_version_filepath}" ("{python_version}")'
             )
-            logger.warning(msg)
+            logger.info(msg)
         else:
             msg = (
                 "A Python version must be provided if there is no pinned version in"
@@ -114,6 +114,7 @@ def uv2conda(
     logger.success(f'Conda environment file created at "{conda_env_path}"')
 
     if show:
+        logger.info("Printing contents of the generated conda environment file")
         console = Console()
-        syntax = Syntax.from_path(str(conda_env_path))
+        syntax = Syntax.from_path(str(conda_env_path), background_color="default")
         console.print(syntax)
