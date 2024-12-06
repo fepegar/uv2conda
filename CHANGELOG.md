@@ -8,14 +8,44 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 <!-- insertion marker -->
 ## Unreleased
 
-<small>[Compare with latest](https://github.com/fepegar/uv2conda/compare/v0.1.2...HEAD)</small>
+<small>[Compare with latest](https://github.com/fepegar/uv2conda/compare/v0.1.5...HEAD)</small>
 
 ### Added
 
+- Add --version parameter ([dc4ac75](https://github.com/fepegar/uv2conda/commit/dc4ac7517270f8dc118458dcd640c1b03629c586) by Fernando Pérez-García).
+
+<!-- insertion marker -->
+## [v0.1.5](https://github.com/fepegar/uv2conda/releases/tag/v0.1.5) - 2024-12-06
+
+<small>[Compare with v0.1.4](https://github.com/fepegar/uv2conda/compare/v0.1.4...v0.1.5)</small>
+
+### Added
+
+- Add recipe to update changelog ([ca6ad00](https://github.com/fepegar/uv2conda/commit/ca6ad007a8252f9ab9c1c8fe6912929496dd7a8e) by Fernando Pérez-García).
+
+### Fixed
+
+- Fix logging when conda path is None ([7e2a3a6](https://github.com/fepegar/uv2conda/commit/7e2a3a62ab597ab1f644cfee5866a0a94620e07c) by Fernando Pérez-García).
+
+### Removed
+
+- Remove unused import ([1d1f1dc](https://github.com/fepegar/uv2conda/commit/1d1f1dc129ba095b3453eee6e83dcbc820b2fbcc) by Fernando Pérez-García).
+
+## [v0.1.4](https://github.com/fepegar/uv2conda/releases/tag/v0.1.4) - 2024-12-06
+
+<small>[Compare with v0.1.2](https://github.com/fepegar/uv2conda/compare/v0.1.2...v0.1.4)</small>
+
+### Added
+
+- Add support to write a requirements file ([d0903a8](https://github.com/fepegar/uv2conda/commit/d0903a80d37540aeb3caa2cae8821363d5acf3f7) by Fernando Pérez-García).
+- Add target to release new version ([1fa13b7](https://github.com/fepegar/uv2conda/commit/1fa13b7ce8ba133a9e4d05e24b676c4c85d14e36) by Fernando Pérez-García).
 - Add changelog ([ae06e14](https://github.com/fepegar/uv2conda/commit/ae06e14a55adc8308dc1bedca7a11c0555a2c25a) by Fernando Pérez-García).
 - Add justfile ([959ab43](https://github.com/fepegar/uv2conda/commit/959ab439251c653805d0a0ac8b4a94dc668ee592) by Fernando Pérez-García).
 
-<!-- insertion marker -->
+### Removed
+
+- Remove recipe ([2ad245c](https://github.com/fepegar/uv2conda/commit/2ad245c2e76d2e1c3ec50593eb43468c3e022fd8) by Fernando Pérez-García).
+
 ## [v0.1.2](https://github.com/fepegar/uv2conda/releases/tag/v0.1.2) - 2024-12-02
 
 <small>[Compare with v0.1.1](https://github.com/fepegar/uv2conda/compare/v0.1.1...v0.1.2)</small>
