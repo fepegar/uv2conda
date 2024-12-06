@@ -1,3 +1,4 @@
+from math import e
 from typing import Optional
 from typing import Union
 
@@ -22,7 +23,6 @@ def make_conda_env_from_dependencies(
     pip_dependencies: Optional[list[str]] = None,
     out_path: Optional[TypePath] = None,
     return_yaml: bool = False,
-    yaml_width: int = 1000,
 ) -> TypeCondaEnv | str:
     if not is_valid_python_version(python_version):
         raise ValueError(f'Invalid Python version: "{python_version}"')
@@ -42,13 +42,20 @@ def make_conda_env_from_dependencies(
             env["dependencies"].append({"pip": pip_dependencies})
 
     if return_yaml or out_path is not None:
-        yaml_string = yaml.dump(env, sort_keys=False, width=yaml_width)
+        yaml_string = env_to_str(env)
         if out_path is not None:
             with open(out_path, "w") as f:
                 f.write(yaml_string)
         return yaml_string
 
     return env
+
+
+def env_to_str(env: TypeCondaEnv | str) -> str:
+    if isinstance(env, str):
+        return env
+    else:
+        return yaml.dump(env, sort_keys=False, width=1000)
 
 
 def make_conda_env_from_requirements_file(

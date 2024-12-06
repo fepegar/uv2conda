@@ -8,6 +8,7 @@ from rich.console import Console
 from rich.syntax import Syntax
 from typing_extensions import Annotated
 
+from .conda import env_to_str
 from .conda import make_conda_env_from_project_dir
 
 app = typer.Typer()
@@ -49,7 +50,7 @@ def uv2conda(
         ),
     ] = "",
     conda_env_path: Annotated[
-        Path,
+        Optional[Path],
         typer.Option(
             "--conda-env-path",
             "-c",
@@ -58,7 +59,7 @@ def uv2conda(
             writable=True,
             help="Path to the output conda environment file.",
         ),
-    ] = Path("environment.yaml"),
+    ] = None,
     requirements_path: Annotated[
         Optional[Path],
         typer.Option(
@@ -73,11 +74,9 @@ def uv2conda(
     show: Annotated[
         bool,
         typer.Option(
-            "--show",
-            "-s",
             help="Print the contents of the generated conda environment file.",
         ),
-    ] = False,
+    ] = True,
     uv_args: Annotated[
         list[str],
         typer.Option(
@@ -126,7 +125,7 @@ def uv2conda(
 
     _check_overwrite(conda_env_path, requirements_path, force)
 
-    make_conda_env_from_project_dir(
+    env = make_conda_env_from_project_dir(
         project_dir,
         name=name,
         python_version=python_version,
@@ -141,16 +140,18 @@ def uv2conda(
     if show:
         logger.info("Printing contents of the generated conda environment file")
         console = Console()
-        syntax = Syntax.from_path(str(conda_env_path), background_color="default")
+        env_yaml = env_to_str(env)
+        # syntax = Syntax.from_path(str(conda_env_path), background_color="default")
+        syntax = Syntax(env_yaml, "yaml", background_color="default")
         console.print(syntax)
 
 
 def _check_overwrite(
-    conda_env_path: Path,
+    conda_env_path: Optional[Path],
     requirements_path: Optional[Path],
     force: bool,
 ) -> None:
-    if conda_env_path.exists() and not force:
+    if conda_env_path is not None and conda_env_path.exists() and not force:
         msg = f'File "{conda_env_path}" already exists. Use --yes to overwrite.'
         logger.error(msg)
         raise typer.Abort()
