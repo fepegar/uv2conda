@@ -15,5 +15,3 @@ release: install_uv
     rm -rf dist
     uv build
     uv publish -t $UV_PUBLISH_TOKEN
-
-bump_patch_and_release: bump part='patch' release
