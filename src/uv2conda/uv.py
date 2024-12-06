@@ -1,6 +1,7 @@
 import shutil
 import subprocess
 import tempfile
+from pathlib import Path
 from typing import Optional
 
 from .pip import read_requirements_file
@@ -44,12 +45,19 @@ def get_requirents_from_project_dir(
     uv_args: Optional[list[str]] = None,
     out_requirements_path: Optional[TypePath] = None,
 ) -> list[str]:
-    with tempfile.NamedTemporaryFile(mode="w") as f:
+    if out_requirements_path is None:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".txt") as f:
+            write_requirements_file_from_project_dir(
+                project_dir,
+                f.name,
+                extra_args=uv_args,
+            )
+            requirements = read_requirements_file(f.name)
+    else:
         write_requirements_file_from_project_dir(
             project_dir,
-            f.name,
+            out_requirements_path,
             extra_args=uv_args,
         )
-        if out_requirements_path is not None:
-            shutil.copyfile(f.name, out_requirements_path)
-        return read_requirements_file(f.name)
+        requirements = read_requirements_file(out_requirements_path)
+    return requirements
