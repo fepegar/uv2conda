@@ -1,6 +1,6 @@
 [project]
 name = "uv2conda"
-version = "0.1.2"
+version = "0.1.3"
 description = "Create a Conda environment file from a Python project using uv."
 readme = "README.md"
 authors = [
