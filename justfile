@@ -8,10 +8,12 @@ setup: install_uv
     uv sync --all-extras --all-groups
     uv run pre-commit install
 
-bump: install_uv
-    uv run bump-my-version bump patch --verbose
+bump part='patch': install_uv
+    uv run bump-my-version bump {{part}} --verbose
 
 release: install_uv
     rm -rf dist
     uv build
     uv publish -t $UV_PUBLISH_TOKEN
+
+bump_patch_and_release: bump part='patch' release

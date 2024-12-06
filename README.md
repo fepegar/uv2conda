@@ -11,6 +11,7 @@ uv2conda \
     --name "my_conda_env_name" \
     --python "3.12.7" \
     --conda-env-path "my_conda_env.yaml" \
+    --requirements-path "requirements.txt" \
     --uv-args "--prerelease=allow"
 ```
 
@@ -24,6 +25,7 @@ uv2conda.make_conda_env_from_project_dir(
     name="my_conda_env_name",
     python_version="3.12.7",
     out_path="environment.yaml",
+    requirements_path="requirements.txt",
     uv_args=["--prerelease=allow"],
 )
 ```
