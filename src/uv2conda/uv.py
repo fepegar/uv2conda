@@ -1,7 +1,6 @@
 import shutil
 import subprocess
 import tempfile
-from pathlib import Path
 from typing import Optional
 
 from .pip import read_requirements_file
@@ -13,6 +12,7 @@ def write_requirements_file_from_project_dir(
     out_path: TypePath,
     extra_args: Optional[list[str]] = None,
 ) -> None:
+    _check_uv_installed()
     command = [
         "uv",
         "export",
@@ -61,3 +61,9 @@ def get_requirents_from_project_dir(
         )
         requirements = read_requirements_file(out_requirements_path)
     return requirements
+
+
+def _check_uv_installed() -> None:
+    if shutil.which("uv") is None:
+        url = "https://docs.astral.sh/uv/getting-started/installation"
+        raise RuntimeError(f"uv not found. Please install it: {url}")
