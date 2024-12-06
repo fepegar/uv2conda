@@ -1,4 +1,4 @@
-__version__ = "0.1.5"
+import importlib.metadata
 
 from .conda import make_conda_env_from_dependencies
 from .conda import make_conda_env_from_project_dir
@@ -15,3 +15,5 @@ __all__ = [
     "get_requirents_from_project_dir",
     "write_requirements_file_from_project_dir",
 ]
+
+__version__ = importlib.metadata.version(__name__)
