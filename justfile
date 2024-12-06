@@ -15,3 +15,6 @@ release: install_uv
     rm -rf dist
     uv build
     uv publish -t $UV_PUBLISH_TOKEN
+
+changelog: install_uv
+    uvx git-changelog --output CHANGELOG.md
