@@ -1,4 +1,4 @@
-__version__ = "0.1.3"
+__version__ = "0.1.4"
 
 from .conda import make_conda_env_from_dependencies
 from .conda import make_conda_env_from_project_dir
