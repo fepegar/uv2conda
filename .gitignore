@@ -15,3 +15,4 @@ wheels/
 *.yaml
 *.ipynb
 uv.lock
+*.txt
