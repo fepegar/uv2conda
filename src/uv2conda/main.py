@@ -8,6 +8,7 @@ from rich.console import Console
 from rich.syntax import Syntax
 from typing_extensions import Annotated
 
+from . import __version__
 from .conda import env_to_str
 from .conda import make_conda_env_from_project_dir
 
@@ -17,6 +18,11 @@ logger.add(
     sys.stderr,
     format="<level>{level}</level> | <cyan>{message}</cyan>",
 )
+
+
+def _version_callback() -> None:
+    print(__version__)
+    raise typer.Exit()
 
 
 @app.command()
@@ -93,6 +99,14 @@ def uv2conda(
             help="Overwrite the output files if they already exist.",
         ),
     ] = False,
+    version: Annotated[
+        Optional[bool],
+        typer.Option(
+            "--version",
+            callback=_version_callback,
+            is_eager=True,
+        ),
+    ] = None,
 ):
     if not name:
         name = project_dir.name
