@@ -133,9 +133,10 @@ def uv2conda(
         uv_args=uv_args,
         requirements_path=requirements_path,
     )
+    if conda_env_path is not None:
+        logger.success(f'Conda environment file created at "{conda_env_path}"')
     if requirements_path is not None:
         logger.success(f'Requirements file created at "{requirements_path}"')
-    logger.success(f'Conda environment file created at "{conda_env_path}"')
 
     if show:
         logger.info("Printing contents of the generated conda environment file")
