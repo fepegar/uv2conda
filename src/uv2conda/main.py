@@ -153,10 +153,11 @@ def _check_overwrite(
     force: bool,
 ) -> None:
     if conda_env_path is not None and conda_env_path.exists() and not force:
-        msg = f'File "{conda_env_path}" already exists. Use --yes to overwrite.'
-        logger.error(msg)
-        raise typer.Abort()
+        _ask("Conda environment file", conda_env_path)
     if requirements_path is not None and requirements_path.exists() and not force:
-        msg = f'File "{requirements_path}" already exists. Use --yes to overwrite.'
-        logger.error(msg)
-        raise typer.Abort()
+        _ask("Requirements file", requirements_path)
+
+
+def _ask(prefix: str, path: Path) -> None:
+    msg = f'{prefix} "{path}" already exists. Would you like to overwrite it?'
+    typer.confirm(msg, abort=True)
