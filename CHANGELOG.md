@@ -6,15 +6,27 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
-## Unreleased
+## [v0.1.6](https://github.com/fepegar/uv2conda/releases/tag/v0.1.6) - 2024-12-07
 
-<small>[Compare with latest](https://github.com/fepegar/uv2conda/compare/v0.1.5...HEAD)</small>
+<small>[Compare with v0.1.5](https://github.com/fepegar/uv2conda/compare/v0.1.5...v0.1.6)</small>
 
 ### Added
 
+- Add better logging ([990ea81](https://github.com/fepegar/uv2conda/commit/990ea815cbdd73a13decc4ccc5977ca919072504) by Fernando Pérez-García).
+- Add some unit tests ([359c5b6](https://github.com/fepegar/uv2conda/commit/359c5b6c5d5329bda268dcd9f4d6844e40ff70ba) by Fernando Pérez-García).
+- Add unit testing recipe ([31b3e01](https://github.com/fepegar/uv2conda/commit/31b3e0109a951ef4dc67b5e41aafe17f6d3a3771) by Fernando Pérez-García).
+- Add help for version option ([c3c4939](https://github.com/fepegar/uv2conda/commit/c3c49397b794cfac85b48dbcd999c8a5e6856744) by Fernando Pérez-García).
+- Add just recipe ([bf0e478](https://github.com/fepegar/uv2conda/commit/bf0e478929408ff0e8a757fe4294aac211ad5b31) by Fernando Pérez-García).
 - Add --version parameter ([dc4ac75](https://github.com/fepegar/uv2conda/commit/dc4ac7517270f8dc118458dcd640c1b03629c586) by Fernando Pérez-García).
 
-<!-- insertion marker -->
+### Changed
+
+- Change how  version is defined in __init__ ([d6cb4ca](https://github.com/fepegar/uv2conda/commit/d6cb4cadfba06f3c356428acdadc8dce4af4b03d) by Fernando Pérez-García).
+
+### Removed
+
+- Remove *args and **kwargs from function definitions ([83d9a2f](https://github.com/fepegar/uv2conda/commit/83d9a2f53c6899ea19322b56ede0de6bb3e26643) by Fernando Pérez-García).
+
 ## [v0.1.5](https://github.com/fepegar/uv2conda/releases/tag/v0.1.5) - 2024-12-06
 
 <small>[Compare with v0.1.4](https://github.com/fepegar/uv2conda/compare/v0.1.4...v0.1.5)</small>
