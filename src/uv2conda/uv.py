@@ -5,6 +5,9 @@ import subprocess
 import tempfile
 from pathlib import Path
 
+import typer
+from loguru import logger
+
 from .pip import read_requirements_file
 
 
@@ -30,20 +33,22 @@ def write_requirements_file_from_project_dir(
         command.extend(extra_args)
     command = [str(arg) for arg in command]
 
-    result = subprocess.run(
-        command,
-        capture_output=True,
-        text=True,
-        check=True,
-    )
-    if result.returncode != 0:
+    try:
+        subprocess.run(
+            command,
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+    except subprocess.CalledProcessError as e:
         command_str = " ".join(command)
         msg = (
             "Error creating requirements file from uv project."
             f"\nCommand: {command_str}"
-            f"\nOutput: {result.stderr}"
+            f"\nOutput from uv: {e.stderr.strip()}"
         )
-        raise RuntimeError(msg)
+        logger.error(msg)
+        raise typer.Exit(1) from e
 
 
 def get_requirents_from_project_dir(

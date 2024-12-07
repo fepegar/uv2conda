@@ -18,7 +18,7 @@ app = typer.Typer(
 logger.remove()
 logger.add(
     sys.stderr,
-    format="<level>{level}</level> | <cyan>{message}</cyan>",
+    format="{level:<8} | <level>{message}</level>",
 )
 current_dir = Path.cwd().resolve()
 default_uv_args = []
