@@ -12,7 +12,9 @@ from . import __version__
 from .conda import env_to_str
 from .conda import make_conda_env_from_project_dir
 
-app = typer.Typer()
+app = typer.Typer(
+    pretty_exceptions_show_locals=False,
+)
 logger.remove()
 logger.add(
     sys.stderr,
@@ -20,11 +22,13 @@ logger.add(
 )
 current_dir = Path.cwd().resolve()
 default_uv_args = []
+default_conda_channels = []
 
 
-def _version_callback() -> None:
-    typer.echo(__version__)
-    raise typer.Exit
+def _version_callback(value: bool) -> None:
+    if value:
+        typer.echo(__version__)
+        raise typer.Exit
 
 
 @app.command()
@@ -62,32 +66,42 @@ def uv2conda(
             "-p",
             help=(
                 "Python version. Defaults to the pinned version"
-                " in the project directory."
+                " in the project directory (.python-version)."
             ),
         ),
     ] = "",
     conda_env_path: Annotated[
         Optional[Path],
         typer.Option(
-            "--conda-env-path",
-            "-c",
+            "--conda-env-file",
+            "-f",
             file_okay=True,
             dir_okay=False,
             writable=True,
             help="Path to the output conda environment file.",
+            rich_help_panel="Output files",
         ),
     ] = None,
     requirements_path: Annotated[
         Optional[Path],
         typer.Option(
-            "--requirements-path",
+            "--requirements-file",
             "-r",
             file_okay=True,
             dir_okay=False,
             writable=True,
             help="Path to the output requirements file.",
+            rich_help_panel="Output files",
         ),
     ] = None,
+    channels: Annotated[
+        list[str],
+        typer.Option(
+            "--channel",
+            "-c",
+            help=("Conda channel to add. May be used multiple times."),
+        ),
+    ] = default_conda_channels,
     show: Annotated[
         bool,
         typer.Option(
@@ -97,9 +111,9 @@ def uv2conda(
     uv_args: Annotated[
         list[str],
         typer.Option(
-            "--uv-args",
+            "--uv-arg",
             "-u",
-            help="Extra arguments to pass to `uv export`. May be used multiple times.",
+            help="Extra argument to pass to `uv export`. May be used multiple times.",
         ),
     ] = default_uv_args,
     force: Annotated[
@@ -120,6 +134,8 @@ def uv2conda(
         ),
     ] = None,
 ) -> None:
+    """Create a conda environment and/or PIP requirements file from a package."""
+
     if not name:
         name = project_dir.name
         msg = f'Environment name not provided. Using project directory name ("{name}")'
@@ -156,6 +172,7 @@ def uv2conda(
         name=name,
         python_version=python_version,
         out_path=conda_env_path,
+        channels=channels,
         uv_args=uv_args,
         requirements_path=requirements_path,
     )
