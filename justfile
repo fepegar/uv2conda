@@ -22,3 +22,6 @@ changelog: install_uv
 ruff: install_uv
     uvx ruff check
     uvx ruff format
+
+test: install_uv
+    uv run pytest
