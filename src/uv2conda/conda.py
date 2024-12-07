@@ -65,29 +65,49 @@ def env_to_str(env: TypeCondaEnv | str) -> str:
 
 
 def make_conda_env_from_requirements_file(
+    name: str,
+    python_version: str,
     requirements_path: Path,
-    *args,
-    **kwargs,
+    channels: list[str] | None = None,
+    conda_dependencies: list[str] | None = None,
+    out_path: Path | None = None,
+    *,
+    return_yaml: bool = False,
 ) -> TypeCondaEnv | str:
     return make_conda_env_from_dependencies(
-        *args,
-        **kwargs,
+        name,
+        python_version,
+        channels=channels,
+        conda_dependencies=conda_dependencies,
         pip_dependencies=read_requirements_file(requirements_path),
+        out_path=out_path,
+        return_yaml=return_yaml,
     )
 
 
 def make_conda_env_from_project_dir(
     project_dir: Path,
-    *args,
-    **kwargs,
+    name: str,
+    python_version: str,
+    channels: list[str] | None = None,
+    conda_dependencies: list[str] | None = None,
+    out_path: Path | None = None,
+    uv_args: list[str] | None = None,
+    requirements_path: Path | None = None,
+    *,
+    return_yaml: bool = False,
 ) -> TypeCondaEnv | str:
     pip_requirements = get_requirents_from_project_dir(
         project_dir,
-        uv_args=kwargs.pop("uv_args", None),
-        out_requirements_path=kwargs.pop("requirements_path", None),
+        uv_args=uv_args,
+        out_requirements_path=requirements_path,
     )
     return make_conda_env_from_dependencies(
-        *args,
-        **kwargs,
+        name,
+        python_version,
+        channels=channels,
+        conda_dependencies=conda_dependencies,
         pip_dependencies=pip_requirements,
+        out_path=out_path,
+        return_yaml=return_yaml,
     )
