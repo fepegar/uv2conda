@@ -116,6 +116,7 @@ def uv2conda(
             "--version",
             callback=_version_callback,
             is_eager=True,
+            help="Show the version and exit.",
         ),
     ] = None,
 ) -> None:
