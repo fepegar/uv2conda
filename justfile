@@ -18,3 +18,7 @@ release: install_uv
 
 changelog: install_uv
     uvx git-changelog --output CHANGELOG.md
+
+ruff: install_uv
+    uvx ruff check
+    uvx ruff format
