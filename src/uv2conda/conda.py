@@ -31,29 +31,29 @@ def make_conda_env_from_dependencies(
     if not is_valid_python_version(python_version):
         msg = f'Invalid Python version: "{python_version}"'
         raise ValueError(msg)
-    env: TypeCondaEnv = {
+    env_dict: TypeCondaEnv = {
         "name": name,
     }
-    if channels is not None:
-        env["channels"] = channels
-    if conda_dependencies is not None or pip_dependencies is not None:
-        env["dependencies"] = [
+    if channels:
+        env_dict["channels"] = channels
+    if conda_dependencies or pip_dependencies:
+        env_dict["dependencies"] = [
             f"python={python_version}",
         ]
         if conda_dependencies:
-            env["dependencies"].extend(conda_dependencies)
+            env_dict["dependencies"].extend(conda_dependencies)
         if pip_dependencies:
-            env["dependencies"].append("pip")
-            env["dependencies"].append({"pip": pip_dependencies})
+            env_dict["dependencies"].append("pip")
+            env_dict["dependencies"].append({"pip": pip_dependencies})
 
     if return_yaml or out_path is not None:
-        yaml_string = env_to_str(env)
+        yaml_string = env_to_str(env_dict)
         if out_path is not None:
             with out_path.open("w") as f:
                 f.write(yaml_string)
         return yaml_string
 
-    return env
+    return env_dict
 
 
 def env_to_str(env: TypeCondaEnv | str) -> str:
