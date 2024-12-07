@@ -1,16 +1,17 @@
+from __future__ import annotations
+
 import shutil
 import subprocess
 import tempfile
-from typing import Optional
+from pathlib import Path
 
 from .pip import read_requirements_file
-from .types import TypePath
 
 
 def write_requirements_file_from_project_dir(
-    project_dir: TypePath,
-    out_path: TypePath,
-    extra_args: Optional[list[str]] = None,
+    project_dir: Path,
+    out_path: Path,
+    extra_args: list[str] | None = None,
 ) -> None:
     _check_uv_installed()
     command = [
@@ -29,7 +30,12 @@ def write_requirements_file_from_project_dir(
         command.extend(extra_args)
     command = [str(arg) for arg in command]
 
-    result = subprocess.run(command, capture_output=True, text=True)
+    result = subprocess.run(
+        command,
+        capture_output=True,
+        text=True,
+        check=True,
+    )
     if result.returncode != 0:
         command_str = " ".join(command)
         msg = (
@@ -41,18 +47,19 @@ def write_requirements_file_from_project_dir(
 
 
 def get_requirents_from_project_dir(
-    project_dir: TypePath,
-    uv_args: Optional[list[str]] = None,
-    out_requirements_path: Optional[TypePath] = None,
+    project_dir: Path,
+    uv_args: list[str] | None = None,
+    out_requirements_path: Path | None = None,
 ) -> list[str]:
     if out_requirements_path is None:
         with tempfile.NamedTemporaryFile(mode="w", suffix=".txt") as f:
+            requirements_path = Path(f.name)
             write_requirements_file_from_project_dir(
                 project_dir,
-                f.name,
+                requirements_path,
                 extra_args=uv_args,
             )
-            requirements = read_requirements_file(f.name)
+            requirements = read_requirements_file(requirements_path)
     else:
         write_requirements_file_from_project_dir(
             project_dir,
@@ -66,4 +73,5 @@ def get_requirents_from_project_dir(
 def _check_uv_installed() -> None:
     if shutil.which("uv") is None:
         url = "https://docs.astral.sh/uv/getting-started/installation"
-        raise RuntimeError(f"uv not found. Please install it: {url}")
+        msg = f"uv not found. Please install it: {url}"
+        raise RuntimeError(msg)

@@ -1,12 +1,16 @@
-from typing import Optional
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 from typing import Union
 
 import yaml
 
 from .pip import read_requirements_file
 from .python import is_valid_python_version
-from .types import TypePath
 from .uv import get_requirents_from_project_dir
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 TypePipEnv = dict[str, list[str]]
 TypeCondaDependency = Union[str, TypePipEnv]
@@ -17,14 +21,16 @@ TypeCondaEnv = dict[str, Union[str, TypeChannels, list[TypeCondaDependency]]]
 def make_conda_env_from_dependencies(
     name: str,
     python_version: str,
-    channels: Optional[list[str]] = None,
-    conda_dependencies: Optional[list[str]] = None,
-    pip_dependencies: Optional[list[str]] = None,
-    out_path: Optional[TypePath] = None,
+    channels: list[str] | None = None,
+    conda_dependencies: list[str] | None = None,
+    pip_dependencies: list[str] | None = None,
+    out_path: Path | None = None,
+    *,
     return_yaml: bool = False,
 ) -> TypeCondaEnv | str:
     if not is_valid_python_version(python_version):
-        raise ValueError(f'Invalid Python version: "{python_version}"')
+        msg = f'Invalid Python version: "{python_version}"'
+        raise ValueError(msg)
     env: TypeCondaEnv = {
         "name": name,
     }
@@ -43,7 +49,7 @@ def make_conda_env_from_dependencies(
     if return_yaml or out_path is not None:
         yaml_string = env_to_str(env)
         if out_path is not None:
-            with open(out_path, "w") as f:
+            with out_path.open("w") as f:
                 f.write(yaml_string)
         return yaml_string
 
@@ -52,13 +58,14 @@ def make_conda_env_from_dependencies(
 
 def env_to_str(env: TypeCondaEnv | str) -> str:
     if isinstance(env, str):
-        return env
+        env_string = env
     else:
-        return yaml.dump(env, sort_keys=False, width=1000)
+        env_string = yaml.dump(env, sort_keys=False, width=1000)
+    return env_string
 
 
 def make_conda_env_from_requirements_file(
-    requirements_path: TypePath,
+    requirements_path: Path,
     *args,
     **kwargs,
 ) -> TypeCondaEnv | str:
@@ -70,7 +77,7 @@ def make_conda_env_from_requirements_file(
 
 
 def make_conda_env_from_project_dir(
-    project_dir: TypePath,
+    project_dir: Path,
     *args,
     **kwargs,
 ) -> TypeCondaEnv | str:

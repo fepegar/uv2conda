@@ -1,12 +1,12 @@
 import sys
 from pathlib import Path
+from typing import Annotated
 from typing import Optional
 
 import typer
 from loguru import logger
 from rich.console import Console
 from rich.syntax import Syntax
-from typing_extensions import Annotated
 
 from . import __version__
 from .conda import env_to_str
@@ -18,11 +18,13 @@ logger.add(
     sys.stderr,
     format="<level>{level}</level> | <cyan>{message}</cyan>",
 )
+current_dir = Path.cwd().resolve()
+default_uv_args = []
 
 
 def _version_callback() -> None:
-    print(__version__)
-    raise typer.Exit()
+    typer.echo(__version__)
+    raise typer.Exit
 
 
 @app.command()
@@ -36,15 +38,21 @@ def uv2conda(
             dir_okay=True,
             exists=True,
             readable=True,
-            help="Path to the input project directory. Defaults to the current directory.",
+            help=(
+                "Path to the input project directory."
+                " Defaults to the current directory."
+            ),
         ),
-    ] = Path.cwd().resolve(),
+    ] = current_dir,
     name: Annotated[
         str,
         typer.Option(
             "--name",
             "-n",
-            help="Name of the conda environment. Defaults to the project directory name.",
+            help=(
+                "Name of the conda environment."
+                " Defaults to the project directory name."
+            ),
         ),
     ] = "",
     python_version: Annotated[
@@ -52,7 +60,10 @@ def uv2conda(
         typer.Option(
             "--python",
             "-p",
-            help="Python version. Defaults to the pinned version in the project directory.",
+            help=(
+                "Python version. Defaults to the pinned version"
+                " in the project directory."
+            ),
         ),
     ] = "",
     conda_env_path: Annotated[
@@ -90,7 +101,7 @@ def uv2conda(
             "-u",
             help="Extra arguments to pass to `uv export`. May be used multiple times.",
         ),
-    ] = [],
+    ] = default_uv_args,
     force: Annotated[
         bool,
         typer.Option(
@@ -107,7 +118,7 @@ def uv2conda(
             is_eager=True,
         ),
     ] = None,
-):
+) -> None:
     if not name:
         name = project_dir.name
         msg = f'Environment name not provided. Using project directory name ("{name}")'
@@ -128,7 +139,7 @@ def uv2conda(
                 f' the project directory ("{pinned_python_version_filepath}")'
             )
             logger.error(msg)
-            raise typer.Abort()
+            raise typer.Abort
 
     if uv_args:
         raw_args = uv_args[:]
@@ -137,7 +148,7 @@ def uv2conda(
             uv_args.extend(arg.split())
         logger.info(f"Extra args for uv: {uv_args}")
 
-    _check_overwrite(conda_env_path, requirements_path, force)
+    _check_overwrite(conda_env_path, requirements_path, force=force)
 
     env = make_conda_env_from_project_dir(
         project_dir,
@@ -156,7 +167,6 @@ def uv2conda(
         logger.info("Printing contents of the generated conda environment file")
         console = Console()
         env_yaml = env_to_str(env)
-        # syntax = Syntax.from_path(str(conda_env_path), background_color="default")
         syntax = Syntax(env_yaml, "yaml", background_color="default")
         console.print(syntax)
 
@@ -164,6 +174,7 @@ def uv2conda(
 def _check_overwrite(
     conda_env_path: Optional[Path],
     requirements_path: Optional[Path],
+    *,
     force: bool,
 ) -> None:
     if conda_env_path is not None and conda_env_path.exists() and not force:

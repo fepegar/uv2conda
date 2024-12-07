@@ -8,11 +8,11 @@ from .uv import get_requirents_from_project_dir
 from .uv import write_requirements_file_from_project_dir
 
 __all__ = [
+    "get_requirents_from_project_dir",
     "make_conda_env_from_dependencies",
     "make_conda_env_from_project_dir",
     "make_conda_env_from_requirements_file",
     "read_requirements_file",
-    "get_requirents_from_project_dir",
     "write_requirements_file_from_project_dir",
 ]
 
