@@ -136,10 +136,22 @@ def uv2conda(
 ) -> None:
     """Create a conda environment and/or PIP requirements file from a package."""
 
+    if not show and conda_env_path is None and requirements_path is None:
+        logger.error(
+            "At least one of --conda-env-file, --requirements-file, or --show"
+            " must be provided.",
+        )
+        raise typer.Abort
+
+    output_conda_env = show or conda_env_path is not None
     if not name:
         name = project_dir.name
-        msg = f'Environment name not provided. Using project directory name ("{name}")'
-        logger.info(msg)
+        if output_conda_env:
+            msg = (
+                "Environment name not provided."
+                f' Using project directory name ("{name}")'
+            )
+            logger.warning(msg)
 
     if not python_version:
         pinned_python_version_filepath = project_dir / ".python-version"
@@ -149,7 +161,7 @@ def uv2conda(
                 "Python version not provided. Using pinned version"
                 f' found in "{pinned_python_version_filepath}" ("{python_version}")'
             )
-            logger.info(msg)
+            logger.warning(msg)
         else:
             msg = (
                 "A Python version must be provided if there is no pinned version in"
