@@ -66,7 +66,7 @@ def uv2conda(
             "-p",
             help=(
                 "Python version. Defaults to the pinned version"
-                " in the project directory (.python-version)."
+                ' in the project directory (in the `.python-version` file).'
             ),
         ),
     ] = "",
@@ -78,7 +78,10 @@ def uv2conda(
             file_okay=True,
             dir_okay=False,
             writable=True,
-            help="Path to the output conda environment file.",
+            help=(
+                "Path to the output conda environment file."
+                " For example: `-f environment.yaml`"
+            ),
             rich_help_panel="Output files",
         ),
     ] = None,
@@ -90,7 +93,10 @@ def uv2conda(
             file_okay=True,
             dir_okay=False,
             writable=True,
-            help="Path to the output requirements file.",
+            help=(
+                "Path to the output requirements file."
+                " For example: `-r requirements.txt`"
+            ),
             rich_help_panel="Output files",
         ),
     ] = None,
@@ -99,7 +105,10 @@ def uv2conda(
         typer.Option(
             "--channel",
             "-c",
-            help=("Conda channel to add. May be used multiple times."),
+            help=(
+                "Conda channel to add. May be used multiple times. For example:"
+                " `-c conda-forge -c nvidia`"
+            ),
         ),
     ] = default_conda_channels,
     show: Annotated[
@@ -113,7 +122,11 @@ def uv2conda(
         typer.Option(
             "--uv-arg",
             "-u",
-            help="Extra argument to pass to `uv export`. May be used multiple times.",
+            help=(
+                "Extra argument to pass to `uv export`. May be used multiple times."
+                " For example: `-u --no-emit-workspace -u --prerelease=allow`. For more"
+                " options, see `uv export --help`."
+            ),
         ),
     ] = default_uv_args,
     force: Annotated[
