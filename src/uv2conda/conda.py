@@ -1,11 +1,11 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
-from typing import Union
 
 import yaml
 
 from .pip import read_requirements_file
+from .python import get_python_version_from_project_dir
 from .python import is_valid_python_version
 from .uv import get_requirents_from_project_dir
 
@@ -13,9 +13,9 @@ if TYPE_CHECKING:
     from pathlib import Path
 
 TypePipEnv = dict[str, list[str]]
-TypeCondaDependency = Union[str, TypePipEnv]
+TypeCondaDependency = str | TypePipEnv
 TypeChannels = list[str]
-TypeCondaEnv = dict[str, Union[str, TypeChannels, list[TypeCondaDependency]]]
+TypeCondaEnv = dict[str, str | TypeChannels | list[TypeCondaDependency]]
 
 
 def make_conda_env_from_dependencies(
@@ -37,14 +37,16 @@ def make_conda_env_from_dependencies(
     if channels:
         env_dict["channels"] = channels
     if conda_dependencies or pip_dependencies:
-        env_dict["dependencies"] = [
+        dependencies_list: list[TypeCondaDependency] = [
             f"python={python_version}",
         ]
         if conda_dependencies:
-            env_dict["dependencies"].extend(conda_dependencies)
+            dependencies_list.extend(conda_dependencies)
         if pip_dependencies:
-            env_dict["dependencies"].append("pip")
-            env_dict["dependencies"].append({"pip": pip_dependencies})
+            dependencies_list.append("pip")
+            dependencies_list.append({"pip": pip_dependencies})
+
+        env_dict["dependencies"] = dependencies_list
 
     if return_yaml or out_path is not None:
         yaml_string = env_to_str(env_dict)
@@ -87,8 +89,8 @@ def make_conda_env_from_requirements_file(
 
 def make_conda_env_from_project_dir(
     project_dir: Path,
-    name: str,
-    python_version: str,
+    name: str | None = None,
+    python_version: str | None = None,
     channels: list[str] | None = None,
     conda_dependencies: list[str] | None = None,
     out_path: Path | None = None,
@@ -102,6 +104,17 @@ def make_conda_env_from_project_dir(
         uv_args=uv_args,
         out_requirements_path=requirements_path,
     )
+    if name is None:
+        name = project_dir.name
+    if python_version is None:
+        python_version = get_python_version_from_project_dir(project_dir)
+        if python_version is None:
+            msg = (
+                "A Python version must be specified either via the "
+                "--python-version option or by creating a "
+                ".python-version file in the project directory."
+            )
+            raise ValueError(msg)
     return make_conda_env_from_dependencies(
         name,
         python_version,
