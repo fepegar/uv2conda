@@ -25,9 +25,7 @@ def make_conda_env_from_dependencies(
     conda_dependencies: list[str] | None = None,
     pip_dependencies: list[str] | None = None,
     out_path: Path | None = None,
-    *,
-    return_yaml: bool = False,
-) -> TypeCondaEnv | str:
+) -> TypeCondaEnv:
     if not is_valid_python_version(python_version):
         msg = f'Invalid Python version: "{python_version}"'
         raise ValueError(msg)
@@ -48,12 +46,8 @@ def make_conda_env_from_dependencies(
 
         env_dict["dependencies"] = dependencies_list
 
-    if return_yaml or out_path is not None:
-        yaml_string = env_to_str(env_dict)
-        if out_path is not None:
-            with out_path.open("w") as f:
-                f.write(yaml_string)
-        return yaml_string
+    if out_path is not None:
+        env_to_file(env_dict, out_path)
 
     return env_dict
 
@@ -66,6 +60,11 @@ def env_to_str(env: TypeCondaEnv | str) -> str:
     return env_string
 
 
+def env_to_file(env: TypeCondaEnv, out_path: Path) -> None:
+    with out_path.open("w") as f:
+        f.write(env_to_str(env))
+
+
 def make_conda_env_from_requirements_file(
     name: str,
     python_version: str,
@@ -73,8 +72,6 @@ def make_conda_env_from_requirements_file(
     channels: list[str] | None = None,
     conda_dependencies: list[str] | None = None,
     out_path: Path | None = None,
-    *,
-    return_yaml: bool = False,
 ) -> TypeCondaEnv | str:
     return make_conda_env_from_dependencies(
         name,
@@ -83,7 +80,6 @@ def make_conda_env_from_requirements_file(
         conda_dependencies=conda_dependencies,
         pip_dependencies=read_requirements_file(requirements_path),
         out_path=out_path,
-        return_yaml=return_yaml,
     )
 
 
@@ -96,8 +92,6 @@ def make_conda_env_from_project_dir(
     out_path: Path | None = None,
     uv_args: list[str] | None = None,
     requirements_path: Path | None = None,
-    *,
-    return_yaml: bool = False,
 ) -> TypeCondaEnv | str:
     pip_requirements = get_requirents_from_project_dir(
         project_dir,
@@ -122,5 +116,4 @@ def make_conda_env_from_project_dir(
         conda_dependencies=conda_dependencies,
         pip_dependencies=pip_requirements,
         out_path=out_path,
-        return_yaml=return_yaml,
     )
