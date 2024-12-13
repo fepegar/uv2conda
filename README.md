@@ -32,11 +32,9 @@ uv2conda.make_conda_env_from_project_dir(
 
 Example for this library:
 
-```shell
-uv2conda --python 3.12.7 --show
+```console
+$ uv2conda --python 3.12.7
 ```
-
-Output (printed on screen as we used `--show`):
 
 ```yaml
 name: uv2conda
