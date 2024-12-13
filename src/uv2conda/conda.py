@@ -53,10 +53,21 @@ def make_conda_env_from_dependencies(
 
 
 def env_to_str(env: TypeCondaEnv | str) -> str:
+
+    # Adapted from https://reorx.com/blog/python-yaml-tips/
+    class _IndentDumper(yaml.Dumper):
+        def increase_indent(self, flow: bool = False, indentless: bool = False) -> None:
+            return super().increase_indent(flow=flow, indentless=False)
+
     if isinstance(env, str):
         env_string = env
     else:
-        env_string = yaml.dump(env, sort_keys=False, width=1000)
+        env_string = yaml.dump(
+            env,
+            sort_keys=False,
+            width=1000,
+            Dumper=_IndentDumper,
+        )
     return env_string
 
 
