@@ -8,7 +8,7 @@ from pathlib import Path
 import typer
 from loguru import logger
 
-from .pip import read_requirements_file
+from .pip import PipRequirements
 
 
 def write_requirements_file_from_project_dir(
@@ -51,11 +51,11 @@ def write_requirements_file_from_project_dir(
         raise typer.Exit(1) from e
 
 
-def get_requirents_from_project_dir(
+def get_pip_requirements_from_project_dir(
     project_dir: Path,
     uv_args: list[str] | None = None,
     out_requirements_path: Path | None = None,
-) -> list[str]:
+) -> PipRequirements:
     if out_requirements_path is None:
         with tempfile.NamedTemporaryFile(mode="w", suffix=".txt") as f:
             requirements_path = Path(f.name)
@@ -64,14 +64,14 @@ def get_requirents_from_project_dir(
                 requirements_path,
                 extra_args=uv_args,
             )
-            requirements = read_requirements_file(requirements_path)
+            requirements = PipRequirements.from_requirements_file(requirements_path)
     else:
         write_requirements_file_from_project_dir(
             project_dir,
             out_requirements_path,
             extra_args=uv_args,
         )
-        requirements = read_requirements_file(out_requirements_path)
+        requirements = PipRequirements.from_requirements_file(out_requirements_path)
     return requirements
 
 

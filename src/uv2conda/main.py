@@ -5,12 +5,9 @@ from typing import Optional
 
 import typer
 from loguru import logger
-from rich.console import Console
-from rich.syntax import Syntax
 
 from . import __version__
-from .conda import env_to_str
-from .conda import make_conda_env_from_project_dir
+from .conda import CondaEnvironment
 
 app = typer.Typer(
     pretty_exceptions_show_locals=False,
@@ -66,7 +63,7 @@ def uv2conda(
             "-p",
             help=(
                 "Python version. Defaults to the pinned version"
-                ' in the project directory (in the `.python-version` file).'
+                " in the project directory (in the `.python-version` file)."
             ),
         ),
     ] = "",
@@ -190,28 +187,25 @@ def uv2conda(
             uv_args.extend(arg.split())
         logger.info(f"Extra args for uv: {uv_args}")
 
-    _check_overwrite(conda_env_path, requirements_path, force=force)
-
-    env = make_conda_env_from_project_dir(
+    environment = CondaEnvironment.from_project_dir(
         project_dir,
         name=name,
         python_version=python_version,
-        out_path=conda_env_path,
         channels=channels,
         uv_args=uv_args,
-        requirements_path=requirements_path,
     )
+
+    _check_overwrite(conda_env_path, requirements_path, force=force)
     if conda_env_path is not None:
+        environment.to_yaml(out_path=conda_env_path)
         logger.success(f'Conda environment file created at "{conda_env_path}"')
     if requirements_path is not None:
+        environment.to_pip_requirements_file(out_path=requirements_path)
         logger.success(f'Requirements file created at "{requirements_path}"')
 
     if show:
         logger.info("Printing contents of the generated conda environment file")
-        console = Console()
-        env_yaml = env_to_str(env)
-        syntax = Syntax(env_yaml, "yaml", background_color="default")
-        console.print(syntax)
+        environment.print()
 
 
 def _check_overwrite(

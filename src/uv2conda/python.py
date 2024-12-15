@@ -24,6 +24,12 @@ def is_valid_python_version(version: str) -> bool:
         return True
 
 
+def check_python_version(python_version: str) -> None:
+    if not is_valid_python_version(python_version):
+        msg = f'Invalid Python version: "{python_version}"'
+        raise ValueError(msg)
+
+
 def get_python_version_from_project_dir(project_dir: Path) -> str | None:
     """Get the Python version from the project directory.
 
