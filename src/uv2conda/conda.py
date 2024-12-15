@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from pathlib import Path
 from typing import Literal
 
 import yaml
@@ -10,9 +10,6 @@ from .pip import PipRequirements
 from .python import check_python_version
 from .python import get_python_version_from_project_dir
 from .uv import get_pip_requirements_from_project_dir
-
-if TYPE_CHECKING:
-    from pathlib import Path
 
 TypePipEnv = dict[Literal["pip"], list[str]]
 TypeCondaDependency = str | TypePipEnv
@@ -49,7 +46,6 @@ class CondaEnvironment:
         channels: list[str] | None = None,
         conda_dependencies: list[str] | None = None,
         uv_args: list[str] | None = None,
-        requirements_path: Path | None = None,
     ) -> CondaEnvironment:
         if project_dir is None:
             project_dir = Path.cwd()
@@ -69,7 +65,6 @@ class CondaEnvironment:
         pip_requirements = get_pip_requirements_from_project_dir(
             project_dir,
             uv_args=uv_args,
-            out_requirements_path=requirements_path,
         )
 
         return cls(
@@ -84,10 +79,11 @@ class CondaEnvironment:
     def from_pip_requirements_file(
         cls,
         python_version: str,
-        pip_requirements_path: Path,
+        pip_requirements_path: Path | str,
         name: str | None = None,
         channels: list[str] | None = None,
     ) -> CondaEnvironment:
+        pip_requirements_path = Path(pip_requirements_path)
         pip_requirements = PipRequirements.from_requirements_file(pip_requirements_path)
         if name is None:
             name = pip_requirements_path.parent.name
@@ -104,7 +100,7 @@ class CondaEnvironment:
     def __str__(self) -> str:
         return self.to_yaml()
 
-    def to_yaml(self, out_path: Path | None = None) -> str:
+    def to_yaml(self, out_path: Path | str | None = None) -> str:
         string = yaml.dump(
             self.to_dict(),
             sort_keys=False,
@@ -112,7 +108,7 @@ class CondaEnvironment:
             Dumper=_IndentDumper,
         )
         if out_path is not None:
-            with out_path.open("w") as f:
+            with open(out_path, "w") as f:
                 f.write(string)
         return string
 
@@ -136,7 +132,7 @@ class CondaEnvironment:
 
         return env_dict
 
-    def to_pip_requirements_file(self, out_path: Path) -> None:
+    def to_pip_requirements_file(self, out_path: Path | str) -> None:
         if self._pip_requirements is None:
             msg = "No pip requirements found in the environment"
             raise ValueError(msg)

@@ -9,8 +9,8 @@ class PipRequirements:
         return "\n".join(self._requirements)
 
     @classmethod
-    def from_requirements_file(cls, requirements_file: Path) -> "PipRequirements":
-        with requirements_file.open() as f:
+    def from_requirements_file(cls, requirements_path: Path) -> "PipRequirements":
+        with requirements_path.open() as f:
             lines = f.readlines()
         requirements = []
         for line in lines:
@@ -20,8 +20,8 @@ class PipRequirements:
             requirements.append(stripped)
         return cls(requirements)
 
-    def to_requirements_file(self, requirements_file: Path) -> None:
-        requirements_file.write_text(str(self))
+    def to_requirements_file(self, requirements_path: Path | str) -> None:
+        Path(requirements_path).write_text(str(self))
 
     def to_list(self) -> list[str]:
         return self._requirements
