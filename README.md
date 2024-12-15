@@ -4,30 +4,31 @@
 
 Tiny Python package to create a [`conda`](https://docs.anaconda.com/miniconda/) environment file from a Python project using [`uv`](https://docs.astral.sh/uv/).
 
+Assuming you have installed `uv`:
+
 ```shell
-pip install uv2conda
-uv2conda \
+uvx uv2conda \
     --project-dir "/path/to/my/project/" \
     --name "my_conda_env_name" \
     --python "3.12.7" \
-    --conda-env-path "my_conda_env.yaml" \
-    --requirements-path "requirements.txt" \
+    --conda-env-file "my_conda_env.yaml" \
+    --requirements-file "requirements.txt" \
     --uv-args "--prerelease=allow"
 ```
 
 Or, in Python:
 
 ```python
-import uv2conda
+from uv2conda import CondaEnvironment
 
-uv2conda.make_conda_env_from_project_dir(
-    "/path/to/my/project/",
+environment = CondaEnvironment.from_project_dir(
+    project_dir="/path/to/my/project/",
     name="my_conda_env_name",
     python_version="3.12.7",
-    out_path="environment.yaml",
-    requirements_path="requirements.txt",
     uv_args=["--prerelease=allow"],
 )
+environment.to_pip_requirements_file("requirements.txt")
+environment.to_yaml("environment.yaml")
 ```
 
 Example for this library:
