@@ -25,3 +25,7 @@ ruff: install_uv
 
 test: install_uv
     uv run pytest
+
+push:
+    git push
+    git push --tags
