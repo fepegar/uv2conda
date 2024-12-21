@@ -22,8 +22,9 @@ def _version_callback(value: bool) -> None:
         raise typer.Exit
 
 
-@app.command()
+@app.command(context_settings={"allow_extra_args": True})
 def uv2conda(
+    ctx: typer.Context,
     project_dir: Annotated[
         Path,
         typer.Option(
@@ -98,7 +99,7 @@ def uv2conda(
             "-c",
             help=(
                 "Conda channel to add. May be used multiple times. For example:"
-                " `-c conda-forge -c nvidia`"
+                " `-c conda-forge -c nvidia`."
             ),
         ),
     ] = default_conda_channels,
@@ -110,18 +111,6 @@ def uv2conda(
             help="Do not print the contents of the generated conda environment file.",
         ),
     ] = False,
-    uv_args: Annotated[
-        list[str],
-        typer.Option(
-            "--uv-arg",
-            "-u",
-            help=(
-                "Extra argument to pass to `uv export`. May be used multiple times."
-                " For example: `-u --no-emit-workspace -u --prerelease=allow`. For more"
-                " options, see `uv export --help`."
-            ),
-        ),
-    ] = default_uv_args,
     force: Annotated[
         bool,
         typer.Option(
@@ -140,7 +129,13 @@ def uv2conda(
         ),
     ] = None,
 ) -> None:
-    """Create a Conda environment or requirements file from a project directory."""
+    """Create a Conda environment or requirements file from a project directory.
+
+    Extra arguments for `uv export` can be passed using `--` followed by the
+    arguments. For example: `uv2conda -- --no-emit-workspace --prerelease=allow`.
+
+    For more information about `uv export`, see `uv export --help` or `uv help export`.
+    """
     must_print_env = not quiet
     must_write_conda_env = conda_env_path is not None
     must_create_yaml = must_print_env or must_write_conda_env
@@ -178,19 +173,15 @@ def uv2conda(
             logger.error(msg)
             raise typer.Abort
 
-    if uv_args:
-        raw_args = uv_args[:]
-        uv_args = []
-        for arg in raw_args:
-            uv_args.extend(arg.split())
-        logger.info(f"Extra args for uv: {uv_args}")
+    if ctx.args:
+        logger.info(f"Extra arguments for `uv export`: {ctx.args}")
 
     environment = CondaEnvironment.from_project_dir(
         project_dir,
         name=name,
         python_version=python_version,
         channels=channels,
-        uv_args=uv_args,
+        uv_args=ctx.args,
     )
 
     _check_overwrite(conda_env_path, requirements_path, force=force)
