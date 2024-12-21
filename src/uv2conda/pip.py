@@ -12,7 +12,7 @@ class PipRequirements:
     def from_requirements_file(cls, requirements_path: Path) -> "PipRequirements":
         with requirements_path.open() as f:
             lines = f.readlines()
-        requirements = []
+        requirements: list[str] = []
         for line in lines:
             stripped = line.strip()
             if not stripped or stripped.startswith("#"):

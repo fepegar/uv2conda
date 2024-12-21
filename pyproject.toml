@@ -38,6 +38,12 @@ Source = "https://github.com/fepegar/uv2conda"
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+[tool.pyright]
+include = ["src"]
+strict = ["src"]
+venvPath = "."
+venv = ".venv"
+
 [tool.ruff.lint]
 # https://docs.astral.sh/ruff/linter/#rule-selection
 select = [
