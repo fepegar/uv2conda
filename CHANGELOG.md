@@ -6,6 +6,50 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## Unreleased
+
+<small>[Compare with latest](https://github.com/fepegar/uv2conda/compare/v1.0.1...HEAD)</small>
+
+### Added
+
+- Add default recipe to justfile ([aca5cac](https://github.com/fepegar/uv2conda/commit/aca5caca853a76d53ac72fc3ccd1f26d4d27ff5f) by Fernando Pérez-García).
+- Add stubs for PyYAML ([89b55e0](https://github.com/fepegar/uv2conda/commit/89b55e03e2a167b65b5688cc6490724e548a86d0) by Fernando Pérez-García).
+- Add recipe to push ([ffc36dd](https://github.com/fepegar/uv2conda/commit/ffc36dd4a21ddd7de59251851a408c3921bd5d6c) by Fernando Pérez-García).
+
+### Fixed
+
+- Fix typing errors ([61b58a7](https://github.com/fepegar/uv2conda/commit/61b58a7fbc1bda14e24ad7882eccbdf89b5c4b3b) by Fernando Pérez-García).
+
+### Removed
+
+- Remove uv-args option ([ad74639](https://github.com/fepegar/uv2conda/commit/ad7463979f341e5441dead02d6c04c2ecf87a4b1) by Fernando Pérez-García).
+- Remove loguru and add --quiet ([11a8efb](https://github.com/fepegar/uv2conda/commit/11a8efb7c2730897b9250b655aa7aedb7ea7ff1e) by Fernando Pérez-García).
+
+<!-- insertion marker -->
+## [v1.0.1](https://github.com/fepegar/uv2conda/releases/tag/v1.0.1) - 2024-12-15
+
+<small>[Compare with v1.0.0](https://github.com/fepegar/uv2conda/compare/v1.0.0...v1.0.1)</small>
+
+### Added
+
+- Add some tests ([212a9e7](https://github.com/fepegar/uv2conda/commit/212a9e70d4df0432a23052b62df1c7d38e2da3d9) by Fernando Pérez-García).
+
+### Fixed
+
+- Fix README ([719882f](https://github.com/fepegar/uv2conda/commit/719882f46eda033ac4ca800a0227c10fba2a76e6) by Fernando Pérez-García).
+
+## [v1.0.0](https://github.com/fepegar/uv2conda/releases/tag/v1.0.0) - 2024-12-15
+
+<small>[Compare with v0.1.7](https://github.com/fepegar/uv2conda/compare/v0.1.7...v1.0.0)</small>
+
+### Removed
+
+- Remove option to return YAML string ([60bc338](https://github.com/fepegar/uv2conda/commit/60bc33830e7718eefbc6ffa08678da20fa722f62) by Fernando Pérez-García).
+
+## [v0.1.7](https://github.com/fepegar/uv2conda/releases/tag/v0.1.7) - 2024-12-12
+
+<small>[Compare with v0.1.6](https://github.com/fepegar/uv2conda/compare/v0.1.6...v0.1.7)</small>
+
 ## [v0.1.6](https://github.com/fepegar/uv2conda/releases/tag/v0.1.6) - 2024-12-07
 
 <small>[Compare with v0.1.5](https://github.com/fepegar/uv2conda/compare/v0.1.5...v0.1.6)</small>
@@ -45,7 +89,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [v0.1.4](https://github.com/fepegar/uv2conda/releases/tag/v0.1.4) - 2024-12-06
 
-<small>[Compare with v0.1.2](https://github.com/fepegar/uv2conda/compare/v0.1.2...v0.1.4)</small>
+<small>[Compare with v0.1.3](https://github.com/fepegar/uv2conda/compare/v0.1.3...v0.1.4)</small>
+
+## [v0.1.3](https://github.com/fepegar/uv2conda/releases/tag/v0.1.3) - 2024-12-06
+
+<small>[Compare with v0.1.2](https://github.com/fepegar/uv2conda/compare/v0.1.2...v0.1.3)</small>
 
 ### Added
 
