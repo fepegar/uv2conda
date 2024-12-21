@@ -18,8 +18,8 @@ logger.add(
     format="{level:<8} | <level>{message}</level>",
 )
 current_dir = Path.cwd().resolve()
-default_uv_args = []
-default_conda_channels = []
+default_uv_args: list[str] = []
+default_conda_channels: list[str] = []
 
 
 def _version_callback(value: bool) -> None:
