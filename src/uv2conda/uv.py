@@ -6,8 +6,8 @@ import tempfile
 from pathlib import Path
 
 import typer
-from loguru import logger
 
+from .logger import logger
 from .pip import PipRequirements
 
 

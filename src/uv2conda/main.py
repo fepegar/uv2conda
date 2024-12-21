@@ -1,21 +1,15 @@
-import sys
 from pathlib import Path
 from typing import Annotated
 from typing import Optional
 
 import typer
-from loguru import logger
 
 from . import __version__
 from .conda import CondaEnvironment
+from .logger import logger
 
 app = typer.Typer(
     pretty_exceptions_show_locals=False,
-)
-logger.remove()
-logger.add(
-    sys.stderr,
-    format="{level:<8} | <level>{message}</level>",
 )
 current_dir = Path.cwd().resolve()
 default_uv_args: list[str] = []
@@ -108,12 +102,14 @@ def uv2conda(
             ),
         ),
     ] = default_conda_channels,
-    show: Annotated[
+    quiet: Annotated[
         bool,
         typer.Option(
-            help="Print the contents of the generated conda environment file.",
+            "--quiet",
+            "-q",
+            help="Do not print the contents of the generated conda environment file.",
         ),
-    ] = True,
+    ] = False,
     uv_args: Annotated[
         list[str],
         typer.Option(
@@ -144,19 +140,21 @@ def uv2conda(
         ),
     ] = None,
 ) -> None:
-    """Create a conda environment and/or PIP requirements file from a package."""
+    """Create a Conda environment or requirements file from a project directory."""
+    must_print_env = not quiet
+    must_write_conda_env = conda_env_path is not None
+    must_create_yaml = must_print_env or must_write_conda_env
 
-    if not show and conda_env_path is None and requirements_path is None:
+    if quiet and not must_write_conda_env and requirements_path is None:
         logger.error(
-            "At least one of --conda-env-file, --requirements-file, or --show"
-            " must be provided.",
+            "If --quiet is used, at least one of --conda-env-file or"
+            "--requirements-file must be provided."
         )
         raise typer.Abort
 
-    output_conda_env = show or conda_env_path is not None
     if not name:
         name = project_dir.name
-        if output_conda_env:
+        if must_create_yaml:
             msg = (
                 "Environment name not provided."
                 f' Using project directory name ("{name}")'
@@ -198,13 +196,13 @@ def uv2conda(
     _check_overwrite(conda_env_path, requirements_path, force=force)
     if conda_env_path is not None:
         environment.to_yaml(out_path=conda_env_path)
-        logger.success(f'Conda environment file created at "{conda_env_path}"')
+        logger.info(f'Conda environment file created at "{conda_env_path}"')
     if requirements_path is not None:
         environment.to_pip_requirements_file(out_path=requirements_path)
-        logger.success(f'Requirements file created at "{requirements_path}"')
+        logger.info(f'Requirements file created at "{requirements_path}"')
 
-    if show:
-        logger.info("Printing contents of the generated conda environment file")
+    if not quiet:
+        logger.info("Printing the generated conda environment YAML")
         environment.print()
 
 

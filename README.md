@@ -35,6 +35,8 @@ Example for this library:
 
 ```console
 $ uv2conda --python 3.12.7
+[23:17:34] WARNING  Environment name not provided. Using project directory name ("uv2conda")
+           INFO     Printing the generated conda environment YAML
 ```
 
 ```yaml
@@ -44,8 +46,7 @@ dependencies:
   - pip
   - pip:
       - click==8.1.7
-      - colorama==0.4.6 ; sys_platform == 'win32' or platform_system == 'Windows'
-      - loguru==0.7.2
+      - colorama==0.4.6 ; sys_platform == 'win32'
       - markdown-it-py==3.0.0
       - mdurl==0.1.2
       - packaging==24.2
@@ -55,7 +56,6 @@ dependencies:
       - shellingham==1.5.4
       - typer==0.15.1
       - typing-extensions==4.12.2
-      - win32-setctime==1.1.0 ; sys_platform == 'win32'
 ```
 
 ## Related projects
