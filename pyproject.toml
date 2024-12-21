@@ -8,7 +8,6 @@ authors = [
 ]
 requires-python = ">=3.9"
 dependencies = [
-    "loguru",
     "packaging",
     "pyyaml",
     "typer",
@@ -25,6 +24,7 @@ dev = [
     "pytest-sugar>=1.0.0",
     "ruff>=0.8.0",
     "tox-uv>=1.16.0",
+    "types-pyyaml>=6.0.12.20241221",
 ]
 
 [project.scripts]
