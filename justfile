@@ -1,3 +1,6 @@
+default:
+    @just --list
+
 @install_uv:
 	if ! command -v uv >/dev/null 2>&1; then \
 		echo "uv is not installed. Installing..."; \
