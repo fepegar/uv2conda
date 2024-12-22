@@ -128,6 +128,14 @@ def uv2conda(
             help="Show the version and exit.",
         ),
     ] = None,
+    verbose: Annotated[
+        bool,
+        typer.Option(
+            "--verbose",
+            "-v",
+            help="Print verbose output.",
+        ),
+    ] = False,
 ) -> None:
     """Create a Conda environment or requirements file from a project directory.
 
@@ -149,7 +157,7 @@ def uv2conda(
 
     if not name:
         name = project_dir.name
-        if must_create_yaml:
+        if must_create_yaml and verbose:
             msg = (
                 "Environment name not provided."
                 f' Using project directory name ("{name}")'
@@ -160,11 +168,12 @@ def uv2conda(
         pinned_python_version_filepath = project_dir / ".python-version"
         if pinned_python_version_filepath.exists():
             python_version = pinned_python_version_filepath.read_text().strip()
-            msg = (
-                "Python version not provided. Using pinned version"
-                f' found in "{pinned_python_version_filepath}" ("{python_version}")'
-            )
-            logger.warning(msg)
+            if verbose:
+                msg = (
+                    "Python version not provided. Using pinned version"
+                    f' found in "{pinned_python_version_filepath}" ("{python_version}")'
+                )
+                logger.warning(msg)
         else:
             msg = (
                 "A Python version must be provided if there is no pinned version in"
@@ -173,7 +182,7 @@ def uv2conda(
             logger.error(msg)
             raise typer.Abort
 
-    if ctx.args:
+    if ctx.args and verbose:
         logger.info(f"Extra arguments for `uv export`: {ctx.args}")
 
     environment = CondaEnvironment.from_project_dir(
@@ -187,13 +196,16 @@ def uv2conda(
     _check_overwrite(conda_env_path, requirements_path, force=force)
     if conda_env_path is not None:
         environment.to_yaml(out_path=conda_env_path)
-        logger.info(f'Conda environment file created at "{conda_env_path}"')
+        if verbose:
+            logger.info(f'Conda environment file created at "{conda_env_path}"')
     if requirements_path is not None:
         environment.to_pip_requirements_file(out_path=requirements_path)
-        logger.info(f'Requirements file created at "{requirements_path}"')
+        if verbose:
+            logger.info(f'Requirements file created at "{requirements_path}"')
 
     if not quiet:
-        logger.info("Printing the generated conda environment YAML")
+        if verbose:
+            logger.info("Printing the generated conda environment YAML")
         environment.print()
 
 
