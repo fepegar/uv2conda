@@ -9,7 +9,7 @@ default:
 
 setup: install_uv
     uv sync --all-extras --all-groups
-    uv run pre-commit install
+    uv run -- pre-commit install --install-hooks
 
 bump part='patch': install_uv
     uv run bump-my-version bump {{part}} --verbose
