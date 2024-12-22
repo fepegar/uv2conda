@@ -1,0 +1,10 @@
+- id: uv2conda
+  name: uv2conda
+  description: "Automatically run 'uv2conda' on your project dependencies"
+  entry: uv2conda
+  language: python
+  files: ^uv\.lock$
+  args: ["--conda-env-file", "environment.yaml", "--quiet", "--yes"]
+  pass_filenames: false
+  additional_dependencies: []
+  minimum_pre_commit_version: "2.9.2"

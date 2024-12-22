@@ -14,6 +14,7 @@ wheels/
 *.yml
 *.yaml
 !.pre-commit-config.yaml
+!.pre-commit-hooks.yaml
 *.ipynb
 uv.lock
 *.txt
