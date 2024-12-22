@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+- Add pre-commit hook to README ([ce932e6](https://github.com/fepegar/uv2conda/commit/ce932e60fc0049a064064d99502558b733ef15b8) by Fernando Pérez-García).
+- Add pre-commit hook ([c885f6e](https://github.com/fepegar/uv2conda/commit/c885f6eceffc518efa0663aa2cdb7c0f9a82f1f8) by Fernando Pérez-García).
+- Add verbose option ([8c9d4a5](https://github.com/fepegar/uv2conda/commit/8c9d4a5b305f3b41c2c00da92f688b9fc0a27c29) by Fernando Pérez-García).
+- Add pyright config and hook ([00362cc](https://github.com/fepegar/uv2conda/commit/00362cc57f9d583a850d397e39cfff0117c76861) by Fernando Pérez-García).
 - Add default recipe to justfile ([aca5cac](https://github.com/fepegar/uv2conda/commit/aca5caca853a76d53ac72fc3ccd1f26d4d27ff5f) by Fernando Pérez-García).
 - Add stubs for PyYAML ([89b55e0](https://github.com/fepegar/uv2conda/commit/89b55e03e2a167b65b5688cc6490724e548a86d0) by Fernando Pérez-García).
 - Add recipe to push ([ffc36dd](https://github.com/fepegar/uv2conda/commit/ffc36dd4a21ddd7de59251851a408c3921bd5d6c) by Fernando Pérez-García).
@@ -40,7 +44,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [v1.0.0](https://github.com/fepegar/uv2conda/releases/tag/v1.0.0) - 2024-12-15
 
-<small>[Compare with v0.1.7](https://github.com/fepegar/uv2conda/compare/v0.1.7...v1.0.0)</small>
+<small>[Compare with v0.1.8](https://github.com/fepegar/uv2conda/compare/v0.1.8...v1.0.0)</small>
+
+## [v0.1.8](https://github.com/fepegar/uv2conda/releases/tag/v0.1.8) - 2024-12-13
+
+<small>[Compare with v0.1.7](https://github.com/fepegar/uv2conda/compare/v0.1.7...v0.1.8)</small>
 
 ### Removed
 
