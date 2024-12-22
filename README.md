@@ -65,7 +65,7 @@ To ensure your Conda environment YAML is up-to-date with your `uv.lock`, your `u
 
 ```yaml
 - repo: https://github.com/fepegar/uv2conda
-  rev: v2.0.0
+  rev: v1.0.1
   hooks:
     - id: uv2conda
 ```
