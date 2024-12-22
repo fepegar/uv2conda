@@ -1,5 +1,6 @@
-# uv2conda
+# `uv2conda`
 
+[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
 ![PyPI](https://img.shields.io/pypi/v/uv2conda)
 
 Tiny Python package to create a [`conda`](https://docs.anaconda.com/miniconda/) environment file from a Python project using [`uv`](https://docs.astral.sh/uv/).
@@ -56,6 +57,17 @@ dependencies:
       - shellingham==1.5.4
       - typer==0.15.1
       - typing-extensions==4.12.2
+```
+
+## Using `uv2conda` with `pre-commit`
+
+To ensure your Conda environment YAML is up-to-date with your `uv.lock`, your `uv` lock file:
+
+```yaml
+- repo: https://github.com/fepegar/uv2conda
+  rev: v2.0.0
+  hooks:
+    - id: uv2conda
 ```
 
 ## Related projects
