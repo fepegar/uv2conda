@@ -157,7 +157,7 @@ def uv2conda(
 
     if not name:
         name = project_dir.name
-        if must_create_yaml and verbose:
+        if must_create_yaml:
             msg = (
                 "Environment name not provided."
                 f' Using project directory name ("{name}")'
@@ -168,12 +168,11 @@ def uv2conda(
         pinned_python_version_filepath = project_dir / ".python-version"
         if pinned_python_version_filepath.exists():
             python_version = pinned_python_version_filepath.read_text().strip()
-            if verbose:
-                msg = (
-                    "Python version not provided. Using pinned version"
-                    f' found in "{pinned_python_version_filepath}" ("{python_version}")'
-                )
-                logger.warning(msg)
+            msg = (
+                "Python version not provided. Using pinned version"
+                f' found in "{pinned_python_version_filepath}" ("{python_version}")'
+            )
+            logger.warning(msg)
         else:
             msg = (
                 "A Python version must be provided if there is no pinned version in"
