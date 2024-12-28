@@ -223,4 +223,4 @@ def _check_overwrite(
 
 def _ask(prefix: str, path: Path) -> None:
     msg = f'{prefix} "{path}" already exists. Would you like to overwrite it?'
-    typer.confirm(msg, abort=True)
+    typer.confirm(msg, abort=True, err=True)
