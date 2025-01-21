@@ -14,7 +14,8 @@ uvx uv2conda \
     --python "3.12.7" \
     --conda-env-file "my_conda_env.yaml" \
     --requirements-file "requirements.txt" \
-    --uv-args "--prerelease=allow"
+    -- \
+        --prerelease=allow
 ```
 
 Or, in Python:
