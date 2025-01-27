@@ -46,8 +46,7 @@ def uv2conda(
             "--name",
             "-n",
             help=(
-                "Name of the conda environment."
-                " Defaults to the project directory name."
+                "Name of the conda environment. Defaults to the project directory name."
             ),
         ),
     ] = "",
