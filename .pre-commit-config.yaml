@@ -9,3 +9,5 @@ repos:
     rev: v1.1.394
     hooks:
     - id: pyright
+      additional_dependencies:
+        - nodejs-wheel-binaries==22.14.0
