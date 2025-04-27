@@ -57,14 +57,17 @@ def get_pip_requirements_from_project_dir(
     out_requirements_path: Path | None = None,
 ) -> PipRequirements:
     if out_requirements_path is None:
-        with tempfile.NamedTemporaryFile(mode="w", suffix=".txt") as f:
+        with tempfile.NamedTemporaryFile(
+            mode="w", suffix=".txt", delete_on_close=False
+        ) as f:
             requirements_path = Path(f.name)
-            write_requirements_file_from_project_dir(
-                project_dir,
-                requirements_path,
-                extra_args=uv_args,
-            )
             requirements = PipRequirements.from_requirements_file(requirements_path)
+        write_requirements_file_from_project_dir(
+            project_dir,
+            requirements_path,
+            extra_args=uv_args,
+        )
+
     else:
         write_requirements_file_from_project_dir(
             project_dir,
